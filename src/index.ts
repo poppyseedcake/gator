@@ -1,23 +1,34 @@
-import { CommandsRegistry, registerCommand, readConfig, handlerLogin, runCommand } from './config'; 
-import { argv, exit } from 'node:process';
+import {
+  type CommandsRegistry,
+  registerCommand,
+  runCommand,
+} from "./commands/commands";
+import { handlerLogin } from "./commands/users";
 
 function main() {
-  const myargs = argv.slice(2);
-  if(myargs.length <= 1) {
-    console.log("Dodaj argumenty");
-    exit(1);
+  const args = process.argv.slice(2);
+
+  if (args.length < 1) {
+    console.log("usage: cli <command> [args...]");
+    process.exit(1);
   }
 
-  const cmdName = myargs[0];
-  const rest_args = myargs.slice(1);
+  const cmdName = args[0];
+  const cmdArgs = args.slice(1);
+  const commandsRegistry: CommandsRegistry = {};
 
-  const cmdRegitry: CommandsRegistry = {};
-  registerCommand(cmdRegitry, "login", handlerLogin);
+  registerCommand(commandsRegistry, "login", handlerLogin);
 
-  runCommand(cmdRegitry, cmdName, ...rest_args);
-
-  const config = readConfig();
-  console.log(config);
+  try {
+    runCommand(commandsRegistry, cmdName, ...cmdArgs);
+  } catch (err) {
+    if (err instanceof Error) {
+      console.error(`Error running command ${cmdName}: ${err.message}`);
+    } else {
+      console.error(`Error running command ${cmdName}: ${err}`);
+    }
+    process.exit(1);
+  }
 }
 
 main();

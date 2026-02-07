@@ -7,29 +7,6 @@ type Config = {
   currentUserName: string;
 };
 
-type CommandHandler = (cmdName: string, ...args: string[]) => void;
-
-export type CommandsRegistry = Record<string, CommandHandler>;
-
-export function registerCommand(registry: CommandsRegistry, cmdName: string, handler: CommandHandler) {
-  registry[cmdName] = handler;
-}
-
-export function runCommand(registry: CommandsRegistry, cmdName: string, ...args: string[]) {
-  if(registry[cmdName]) {
-    registry[cmdName](cmdName, ...args);
-  }
-}
-
-export function handlerLogin(cmdName: string, ...args: string[]) {
-  if (args.length == 0) {
-    throw new Error("Please proide login");
-  }
-  const login = args[0];
-  setUser(login);
-  console.log(`User ${login} was set.`)
-}
-
 export function setUser(userName: string) {
   const config = readConfig();
   config.currentUserName = userName;
@@ -81,4 +58,3 @@ function writeConfig(config: Config) {
   const data = JSON.stringify(rawConfig, null, 2);
   fs.writeFileSync(fullPath, data, { encoding: "utf-8" });
 }
-
