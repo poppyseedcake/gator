@@ -7,6 +7,12 @@ type Config = {
   currentUserName: string;
 };
 
+type CommandHandler = (cmdName: string, ...args: string[]) => void;
+
+function handlerLogin(cmdName: string, ...args: string[]) {
+  
+}
+
 export function setUser(userName: string) {
   const config = readConfig();
   config.currentUserName = userName;
@@ -58,3 +64,4 @@ function writeConfig(config: Config) {
   const data = JSON.stringify(rawConfig, null, 2);
   fs.writeFileSync(fullPath, data, { encoding: "utf-8" });
 }
+
