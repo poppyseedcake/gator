@@ -1,7 +1,7 @@
 {
   "name": "gator",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "",
   "type": "module",
   "scripts": {
     "start": "tsx ./src/index.ts",
@@ -10,11 +10,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
   "devDependencies": {
-    "@types/node": "^25.2.1",
-    "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
+    "@types/node": "^22.10.1",
+    "drizzle-kit": "^0.30.6",
+    "tsx": "^4.19.1",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.38.4",
+    "postgres": "^3.4.8"
   }
 }
