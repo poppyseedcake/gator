@@ -1,5 +1,5 @@
-import { createUser, getUser } from "../lib/db/queries/users";
-import { setUser } from "../config";
+import { readConfig, setUser } from "../config";
+import { createUser, getUser, getUsers } from "../lib/db/queries/users";
 
 export async function handlerLogin(cmdName: string, ...args: string[]) {
   if (args.length !== 1) {
@@ -7,38 +7,39 @@ export async function handlerLogin(cmdName: string, ...args: string[]) {
   }
 
   const userName = args[0];
-  
-  const checkUser = await getUser(userName);
-  if(!checkUser) {
-    throw new Error(`User ${userName} does not exist.`);
-
+  const existingUser = await getUser(userName);
+  if (!existingUser) {
+    throw new Error(`User ${userName} not found`);
   }
 
-  setUser(userName);
+  setUser(existingUser.name);
   console.log("User switched successfully!");
 }
 
 export async function handlerRegister(cmdName: string, ...args: string[]) {
-  if (args.length !== 1) {
+  if (args.length != 1) {
     throw new Error(`usage: ${cmdName} <name>`);
   }
-  console.log("debug print1");
 
   const userName = args[0];
-  try {
-    const checkUser = await getUser(userName);
-    console.log("debug print2 ", checkUser);
-  } catch(e) {
-    console.error("get user failed", e);
-    throw e;
+  const user = await createUser(userName);
+  if (!user) {
+    throw new Error(`User ${userName} not found`);
   }
 
-  //if(checkUser) {
-  //  throw new Error(`user ${userName} already exists.`);
-  //}
-
-  const result = await createUser(userName);
-  setUser(userName); 
+  setUser(user.name);
   console.log("User created successfully!");
-  console.log(await getUser(userName));
+}
+
+export async function handlerListUsers(_: string) {
+  const users = await getUsers();
+  const config = readConfig();
+
+  for (let user of users) {
+    if (user.name === config.currentUserName) {
+      console.log(`* ${user.name} (current)`);
+      continue;
+    }
+    console.log(`* ${user.name}`);
+  }
 }
