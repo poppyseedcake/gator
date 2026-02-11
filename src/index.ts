@@ -4,13 +4,15 @@ import {
   runCommand,
 } from "./commands/commands";
 import { handlerLogin, handlerRegister } from "./commands/users";
+import { conn } from "./lib/db";
 
 async function main() {
   const args = process.argv.slice(2);
 
   if (args.length < 1) {
     console.log("usage: cli <command> [args...]");
-    process.exit(1);
+    process.exitCode = 1;
+    return;
   }
 
   const cmdName = args[0];
@@ -29,6 +31,8 @@ async function main() {
       console.error(`Error running command ${cmdName}: ${err}`);
     }
     process.exit(1);
+  } finally {
+    await conn.end({ timeout: 5});
   }
 
   process.exit(0);
