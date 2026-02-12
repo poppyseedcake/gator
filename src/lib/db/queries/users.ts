@@ -19,4 +19,4 @@ export async function deleteUsers() {
 
 export async function getUsers() {
     return db.select().from(users);
-}
+}//
