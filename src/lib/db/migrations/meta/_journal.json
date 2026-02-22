@@ -8,6 +8,13 @@
       "when": 1770589952342,
       "tag": "0000_broken_maestro",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771774711279,
+      "tag": "0001_sour_havok",
+      "breakpoints": true
     }
   ]
 }
