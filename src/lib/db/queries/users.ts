@@ -1,5 +1,5 @@
 import { db } from "..";
-import { users } from "../schema";
+import { User, users } from "../schema";
 import { eq } from "drizzle-orm";
 import { firstOrUndefined } from "./utils";
 
@@ -19,4 +19,8 @@ export async function deleteUsers() {
 
 export async function getUsers() {
     return db.select().from(users);
-}//
+}
+
+export async function getUserbyId(id: string) {
+  return db.select().from(users).where(eq(users.id, id));
+}
