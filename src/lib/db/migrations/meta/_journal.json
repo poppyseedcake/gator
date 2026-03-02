@@ -15,6 +15,13 @@
       "when": 1771774711279,
       "tag": "0001_sour_havok",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1772399563135,
+      "tag": "0002_greedy_moondragon",
+      "breakpoints": true
     }
   ]
 }

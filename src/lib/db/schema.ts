@@ -41,3 +41,5 @@ export const feed_follows = pgTable("feed_follows", {
     table.feed_id,
   ),
 }));
+
+export type FeedFollow = typeof feed_follows.$inferSelect; 
