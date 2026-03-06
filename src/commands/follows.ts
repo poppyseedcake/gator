@@ -1,11 +1,8 @@
-// Add a follow command. It takes a single url argument and creates a new feed follow record for the current user. 
-// It should print the name of the feed and the current user once the record is created (which the query we just made should support). 
-// You'll need a query to look up feeds by URL.
-
 import { readConfig } from "src/config";
 import { getFeedByUrl } from "../lib/db/queries/feeds";
 import { getUser } from "../lib/db/queries/users";
 import { createFeedFollow } from "../lib/db/queries/feed_follows";
+import { getFeedFollowsForUser } from "../lib/db/queries/feed_follows";
 
 export async function handlerFollow(cmdName: string, ...args: string[]) {
   if (args.length !== 1) {
@@ -26,4 +23,24 @@ export async function handlerFollow(cmdName: string, ...args: string[]) {
   console.log(`Feed followed successfully!`);
   console.log(`* Feed: ${feedFollow.feedName}`);
   console.log(`* User: ${feedFollow.userName}`);
+}
+
+export async function handlerFollowing(_: string) {
+  const config = readConfig();
+  const user = await getUser(config.currentUserName);
+  if (!user) {
+    throw new Error(`User ${config.currentUserName} not found`);
+  }
+  
+  const feedFollows = await getFeedFollowsForUser(user.id);
+  
+  if (feedFollows.length === 0) {
+    console.log("No feeds found.");
+    return;
+  }
+  
+  console.log(`Found %d feeds:\n`, feedFollows.length);
+  for (const follow of feedFollows) {
+    console.log(`* ${follow.feedName}`);
+  }
 }
