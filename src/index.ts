@@ -26,10 +26,10 @@ async function main() {
   registerCommand(commandsRegistry, "reset", handlerReset);
   registerCommand(commandsRegistry, "users", handlerListUsers);
   registerCommand(commandsRegistry, "agg", handlerAgg);
-  registerCommand(commandsRegistry, "addfeed", handlerAddFeed);
+  registerCommand(commandsRegistry, "addfeed", middlewareLoggedIn(handlerAddFeed));
   registerCommand(commandsRegistry, "feeds", handlerListFeeds);
-  registerCommand(commandsRegistry, "follow", handlerFollow);
-  registerCommand(commandsRegistry, "following", handlerFollowing);
+  registerCommand(commandsRegistry, "follow", middlewareLoggedIn(handlerFollow));
+  registerCommand(commandsRegistry, "following", middlewareLoggedIn(handlerFollowing));
 
   try {
     await runCommand(commandsRegistry, cmdName, ...cmdArgs);
@@ -45,3 +45,7 @@ async function main() {
 }
 
 main();
+
+function middlewareLoggedIn(handlerAddFeed: (cmdName: string, ...args: string[]) => Promise<void>): import("./commands/commands").CommandHandler {
+  throw new Error("Function not implemented.");
+}
