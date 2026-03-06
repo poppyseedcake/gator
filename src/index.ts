@@ -8,6 +8,7 @@ import { handlerReset } from "./commands/reset";
 import { handlerAgg } from "./commands/aggregate";
 import { handlerAddFeed, handlerListFeeds } from "./commands/feeds";
 import { handlerFollow, handlerFollowing } from "./commands/follows";
+import { middlewareLoggedIn } from "./middleware";
 
 async function main() {
   const args = process.argv.slice(2);
@@ -46,6 +47,4 @@ async function main() {
 
 main();
 
-function middlewareLoggedIn(handlerAddFeed: (cmdName: string, ...args: string[]) => Promise<void>): import("./commands/commands").CommandHandler {
-  throw new Error("Function not implemented.");
-}
+
